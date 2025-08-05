@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  jupyter-c:
+    build: .
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/workspace
+      - jupyter_data:/home/jupyter_user/.jupyter
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: jupyter-notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+
+volumes:
+  jupyter_data:

@@ -1,27 +1,47 @@
 #!/bin/bash
 
-echo "🚀 Starting Jupyter Multi-Kernel Development Environment"
-echo "========================================================="
-echo "📦 Includes: C/C++ development + Python 3.10 ML/AI environment"
-echo "🧠 Kernels: Python 3, Python 3.10 (ML/AI), C, C++"
-echo "🔧 Packages: PyTorch, TensorFlow, ONNX, ai-edge-torch, nobuco"
-echo "========================================================="
+echo "🚀 Jupyter Development Environment Selector"
+echo "=========================================="
+echo "Choose which environment to start:"
+echo "1) C/C++ Development Only (Port 8888)"
+echo "2) ML/AI Development Only (Port 8889)" 
+echo "3) Combined C/C++ + ML/AI (Port 8890)"
+echo "4) All Environments (Ports 8888, 8889, 8890)"
+echo "=========================================="
 
-# Check if Docker is installed
-if ! command -v docker &> /dev/null; then
-    echo "❌ Docker is not installed. Please install Docker first."
-    echo "   Visit: https://docs.docker.com/get-docker/"
-    exit 1
-fi
+read -p "Enter your choice (1-4): " choice
 
-# Check if Docker Compose is available
-if command -v docker-compose &> /dev/null || docker compose version &> /dev/null 2>&1; then
-    echo "🔧 Building and starting the environment with Docker Compose..."
-    
-    # Try docker-compose first, then docker compose
-    if command -v docker-compose &> /dev/null; then
-        docker-compose up --build
-    else
+case $choice in
+    1)
+        echo "🔧 Starting C/C++ Development Environment..."
+        ./start-jupyter-c-only.sh
+        ;;
+    2)
+        echo "🧠 Starting ML/AI Development Environment..."
+        ./start-jupyter-ml.sh
+        ;;
+    3)
+        echo "🚀 Starting Combined Development Environment..."
+        ./start-jupyter-combined.sh
+        ;;
+    4)
+        echo "🌟 Starting All Environments..."
+        if command -v docker-compose &> /dev/null; then
+            docker-compose up --build
+        else
+            docker compose up --build
+        fi
+        echo ""
+        echo "🌐 Environments running at:"
+        echo "   C/C++ Development: http://localhost:8888"
+        echo "   ML/AI Development: http://localhost:8889"
+        echo "   Combined Environment: http://localhost:8890"
+        ;;
+    *)
+        echo "❌ Invalid choice. Please run the script again."
+        exit 1
+        ;;
+esac
         docker compose up --build
     fi
 else

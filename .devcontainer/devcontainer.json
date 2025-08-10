@@ -1,0 +1,85 @@
+{
+  "name": "ONNX Runtime C/C++ Development",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.makefile-tools",
+        "twxs.cmake",
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.jupyter-keymap",
+        "ms-toolsai.jupyter-renderers",
+        "ms-toolsai.vscode-jupyter-cell-tags",
+        "ms-toolsai.vscode-jupyter-slideshow",
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-json",
+        "eamodio.gitlens",
+        "aaron-bond.better-comments",
+        "formulahendry.code-runner"
+      ],
+      "settings": {
+        "C_Cpp.default.includePath": [
+          "/usr/local/onnxruntime/include",
+          "/usr/include",
+          "/usr/local/include"
+        ],
+        "C_Cpp.default.libraryPath": [
+          "/usr/local/onnxruntime/lib",
+          "/usr/lib",
+          "/usr/local/lib"
+        ],
+        "C_Cpp.default.compilerPath": "/usr/bin/gcc",
+        "C_Cpp.default.cStandard": "c17",
+        "C_Cpp.default.cppStandard": "c++17",
+        "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+        "C_Cpp.default.defines": [],
+        "C_Cpp.default.compilerArgs": [
+          "-I/usr/local/onnxruntime/include"
+        ],
+        "code-runner.executorMap": {
+          "c": "cd $dir && gcc -I/usr/local/onnxruntime/include -L/usr/local/onnxruntime/lib $fileName -lonnxruntime -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+          "cpp": "cd $dir && g++ -I/usr/local/onnxruntime/include -L/usr/local/onnxruntime/lib $fileName -lonnxruntime -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+        },
+        "code-runner.runInTerminal": true,
+        "code-runner.preserveFocus": false,
+        "code-runner.clearPreviousOutput": true,
+        "jupyter.notebookFileRoot": "${workspaceFolder}",
+        "python.defaultInterpreterPath": "/usr/bin/python3",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.associations": {
+          "*.h": "c",
+          "*.c": "c",
+          "*.hpp": "cpp",
+          "*.cpp": "cpp",
+          "*.onnx": "binary"
+        }
+      }
+    }
+  },
+  "forwardPorts": [8888],
+  "portsAttributes": {
+    "8888": {
+      "label": "Jupyter",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "echo 'ONNX Runtime C/C++ development environment ready!' && echo 'ONNX Runtime location: /usr/local/onnxruntime' && ls -la /usr/local/onnxruntime/",
+  "remoteUser": "jupyter_user",
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind"
+  ],
+  "containerEnv": {
+    "ONNX_RUNTIME_ROOT": "/usr/local/onnxruntime",
+    "LD_LIBRARY_PATH": "/usr/local/onnxruntime/lib:${LD_LIBRARY_PATH}",
+    "C_INCLUDE_PATH": "/usr/local/onnxruntime/include:${C_INCLUDE_PATH}",
+    "LIBRARY_PATH": "/usr/local/onnxruntime/lib:${LIBRARY_PATH}"
+  }
+}

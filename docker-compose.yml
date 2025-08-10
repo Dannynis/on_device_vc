@@ -1,8 +1,12 @@
 version: '3.8'
 
 services:
+  # C/C++ Development Environment
   jupyter-c:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    user: root
     ports:
       - "8888:8888"
     volumes:
@@ -12,5 +16,35 @@ services:
       - JUPYTER_ENABLE_LAB=yes
     command: jupyter-notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
 
+  # ML/AI Development Environment  
+  jupyter-ml:
+    build:
+      context: .
+      dockerfile: Dockerfile.ml
+    ports:
+      - "8889:8888"
+    volumes:
+      - .:/workspace
+      - jupyter_ml_data:/home/jupyter_user/.jupyter
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: jupyter-notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+
+  # Combined C/C++ + ML/AI Environment
+  jupyter-combined:
+    build:
+      context: .
+      dockerfile: Dockerfile.combined
+    ports:
+      - "8890:8888"
+    volumes:
+      - .:/workspace
+      - jupyter_combined_data:/home/jupyter_user/.jupyter
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: jupyter-notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+
 volumes:
   jupyter_data:
+  jupyter_ml_data:
+  jupyter_combined_data:

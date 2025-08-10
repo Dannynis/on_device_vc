@@ -1,80 +1,137 @@
-# Jupyter Multi-Kernel Development Environment
+# Jupyter Multi-Environment Development Setup
 
-This setup provides a complete Linux-based development environment with dual Python kernels for C development and machine learning.
+This setup provides multiple specialized development environments for different use cases, all containerized and ready to use.
 
-## 📋 What's Included
+## 📋 Available Environments
 
-### Base Environment
-- **Ubuntu 22.04** base image
-- **GCC/G++** compilers for C/C++ development
-- **Development tools**: make, cmake, git, vim, nano
-
-### Python Environments
-
-#### Default Python 3 Environment
+### 1. C/C++ Development Environment (Port 8888)
+- **Ubuntu 22.04** base with GCC/G++ compilers
 - **Python 3** with Jupyter Lab
-- **C/C++ kernels** for Jupyter notebooks
+- **C/C++ kernels** for direct code execution
 - **Development packages**: cffi, cython, numpy, matplotlib
-- **Use case**: General development and C programming
+- **Use case**: C/C++ programming, system development
+- **Dockerfile**: `Dockerfile`
 
-#### Python 3.10 ML/AI Environment
+### 2. ML/AI Development Environment (Port 8889)
 - **Python 3.10** with enhanced ML capabilities
 - **PyTorch**: Latest version with CUDA 12.8 support
 - **TensorFlow**: For neural network development
 - **ONNX & ONNX Runtime**: Model interoperability
 - **AI Edge Torch**: Mobile and edge deployment
 - **Nobuco**: Neural network optimization
-- **Use case**: Machine learning, AI model development, and deployment
+- **Use case**: Machine learning, AI model development, deployment
+- **Dockerfile**: `Dockerfile.ml`
 
-## 🚀 Quick Start
+### 3. Combined Environment (Port 8890)
+- **All features from both environments above**
+- **Multiple kernels**: Python 3, Python 3.10 (ML/AI), C, C++
+- **Complete toolchain**: GCC/G++ + PyTorch + TensorFlow
+- **Use case**: Full-stack development, research, education
+- **Dockerfile**: `Dockerfile.combined`
 
-### Windows
+## 🚀 Quick Start Options
+
+### Automated Setup (Recommended)
+
+**Windows:**
 ```cmd
 start-jupyter-c.bat
 ```
 
-### Linux/Mac
+**Linux/Mac:**
 ```bash
 chmod +x start-jupyter-c.sh
 ./start-jupyter-c.sh
 ```
 
+The script will show you options:
+1. **C/C++ Development Only** (Port 8888)
+2. **ML/AI Development Only** (Port 8889)
+3. **Combined Environment** (Port 8890)
+4. **All Environments** (All ports)
+
+### Individual Environment Startup
+
+**C/C++ Environment:**
+```bash
+./start-jupyter-c-only.sh      # Linux/Mac
+start-jupyter-c-only.bat       # Windows
+```
+
+**ML/AI Environment:**
+```bash
+./start-jupyter-ml.sh          # Linux/Mac
+start-jupyter-ml.bat           # Windows
+```
+
+**Combined Environment:**
+```bash
+./start-jupyter-combined.sh    # Linux/Mac
+start-jupyter-combined.bat     # Windows
+```
+
 ### Manual Docker Commands
 
-Using Docker Compose:
+**Single Environment:**
 ```bash
+# C/C++ Environment
+docker-compose up --build jupyter-c
+
+# ML/AI Environment  
+docker-compose up --build jupyter-ml
+
+# Combined Environment
+docker-compose up --build jupyter-combined
+
+# All Environments
 docker-compose up --build
 ```
 
-Using Docker directly:
+**Direct Docker:**
 ```bash
-# Build the image
+# C/C++ Environment
 docker build -t jupyter-c-env .
-
-# Run the container
 docker run -p 8888:8888 -v $(pwd):/workspace jupyter-c-env
+
+# ML/AI Environment
+docker build -f Dockerfile.ml -t jupyter-ml-env .
+docker run -p 8889:8888 -v $(pwd):/workspace jupyter-ml-env
+
+# Combined Environment
+docker build -f Dockerfile.combined -t jupyter-combined-env .
+docker run -p 8890:8888 -v $(pwd):/workspace jupyter-combined-env
 ```
 
 ## 🌐 Access
 
-Once started, open your browser and navigate to:
-**http://localhost:8888**
+Access your chosen environment(s) in the browser:
 
-You'll see multiple kernel options:
-- **Python 3**: Default environment for C development
-- **Python 3.10 (ML/AI)**: Enhanced environment for machine learning
-- **C**: Direct C code execution (when available)
-- **C++**: Direct C++ code execution (when available)
+- **C/C++ Development**: http://localhost:8888
+- **ML/AI Development**: http://localhost:8889  
+- **Combined Environment**: http://localhost:8890
+
+### Available Kernels by Environment
+
+| Environment | Python 3 | Python 3.10 (ML/AI) | C | C++ |
+|-------------|----------|---------------------|---|-----|
+| C/C++ Only  | ✅ | ❌ | ✅ | ✅ |
+| ML/AI Only  | ✅ | ✅ | ❌ | ❌ |
+| Combined    | ✅ | ✅ | ✅ | ✅ |
 
 ## 📁 File Structure
 
 ```
-├── Dockerfile              # Container definition with dual Python environments
-├── docker-compose.yml      # Multi-container setup
-├── start-jupyter-c.sh      # Linux/Mac startup script
-├── start-jupyter-c.bat     # Windows startup script
-├── test_kernels.py         # Kernel and package testing script
-├── c.ipynb                 # C programming examples and exercises
+├── Dockerfile                  # C/C++ development environment
+├── Dockerfile.ml              # ML/AI development environment  
+├── Dockerfile.combined         # Combined environment
+├── docker-compose.yml          # Multi-environment orchestration
+├── start-jupyter-c.sh/.bat     # Main environment selector
+├── start-jupyter-c-only.sh/.bat    # C/C++ only launcher
+├── start-jupyter-ml.sh/.bat        # ML/AI only launcher
+├── start-jupyter-combined.sh/.bat  # Combined launcher
+├── test_kernels.py             # Environment testing script
+├── c.ipynb                     # C programming examples
+├── cpp.ipynb                   # C++ programming tutorial
 ├── cpp.ipynb              # C++ programming tutorial
 ├── mnist.ipynb            # ML example using Python 3.10 kernel
 └── README.md              # This file

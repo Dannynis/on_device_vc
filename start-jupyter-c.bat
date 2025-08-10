@@ -1,21 +1,42 @@
 @echo off
-echo 🚀 Starting Jupyter Multi-Kernel Development Environment
-echo =========================================================
-echo 📦 Includes: C/C++ development + Python 3.10 ML/AI environment
-echo 🧠 Kernels: Python 3, Python 3.10 (ML/AI), C, C++
-echo 🔧 Packages: PyTorch, TensorFlow, ONNX, ai-edge-torch, nobuco
-echo =========================================================
+echo 🚀 Jupyter Development Environment Selector
+echo ==========================================
+echo Choose which environment to start:
+echo 1) C/C++ Development Only (Port 8888)
+echo 2) ML/AI Development Only (Port 8889)
+echo 3) Combined C/C++ + ML/AI (Port 8890)
+echo 4) All Environments (Ports 8888, 8889, 8890)
+echo ==========================================
 
-REM Check if Docker is installed
-docker --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo ❌ Docker is not installed. Please install Docker Desktop first.
-    echo    Visit: https://docs.docker.com/desktop/windows/
+set /p choice=Enter your choice (1-4): 
+
+if "%choice%"=="1" (
+    echo 🔧 Starting C/C++ Development Environment...
+    call start-jupyter-c-only.bat
+) else if "%choice%"=="2" (
+    echo 🧠 Starting ML/AI Development Environment...
+    call start-jupyter-ml.bat
+) else if "%choice%"=="3" (
+    echo 🚀 Starting Combined Development Environment...
+    call start-jupyter-combined.bat
+) else if "%choice%"=="4" (
+    echo 🌟 Starting All Environments...
+    docker-compose --version >nul 2>&1
+    if %errorlevel% equ 0 (
+        docker-compose up --build
+    ) else (
+        docker compose up --build
+    )
+    echo.
+    echo 🌐 Environments running at:
+    echo    C/C++ Development: http://localhost:8888
+    echo    ML/AI Development: http://localhost:8889
+    echo    Combined Environment: http://localhost:8890
+) else (
+    echo ❌ Invalid choice. Please run the script again.
     pause
     exit /b 1
 )
-
-echo 🔧 Building and starting the environment...
 
 REM Check if Docker Compose is available
 docker-compose --version >nul 2>&1

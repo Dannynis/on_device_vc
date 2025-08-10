@@ -1,0 +1,144 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build C with ONNX Runtime",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-I/usr/local/onnxruntime/include",
+                "-L/usr/local/onnxruntime/lib",
+                "${file}",
+                "-lonnxruntime",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Compile C program with ONNX Runtime"
+        },
+        {
+            "label": "Build and Run C with ONNX Runtime",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-I/usr/local/onnxruntime/include",
+                "-L/usr/local/onnxruntime/lib",
+                "${file}",
+                "-lonnxruntime",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "&&",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Compile and run C program with ONNX Runtime"
+        },
+        {
+            "label": "Build C++ with ONNX Runtime",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-I/usr/local/onnxruntime/include",
+                "-L/usr/local/onnxruntime/lib",
+                "${file}",
+                "-lonnxruntime",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Compile C++ program with ONNX Runtime"
+        },
+        {
+            "label": "Clean build artifacts",
+            "type": "shell",
+            "command": "find",
+            "args": [
+                ".",
+                "-type",
+                "f",
+                "-executable",
+                "-not",
+                "-name",
+                "*.sh",
+                "-not",
+                "-name",
+                "*.py",
+                "-delete"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            },
+            "detail": "Clean compiled executables"
+        },
+        {
+            "label": "Start Jupyter Server",
+            "type": "shell",
+            "command": "jupyter-notebook",
+            "args": [
+                "--ip=0.0.0.0",
+                "--port=8888",
+                "--no-browser",
+                "--allow-root",
+                "--NotebookApp.token=''",
+                "--NotebookApp.password=''"
+            ],
+            "isBackground": true,
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "detail": "Start Jupyter notebook server"
+        },
+        {
+            "label": "Verify ONNX Runtime Installation",
+            "type": "shell",
+            "command": "/workspace/verify_onnxruntime.sh",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "detail": "Run ONNX Runtime installation verification"
+        }
+    ]
+}
